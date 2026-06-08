@@ -6,16 +6,22 @@ import com.example.modid.proxy.ClientProxyExampleMod;
 import com.example.modid.proxy.CommonProxy;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,5 +63,20 @@ public class ExampleMod {
         ((IHasModel) item).registerModels();
       }
     });
+  }
+
+  @SubscribeEvent
+  public void onPlayerEvent(PlayerLoggedInEvent event) {
+    if (event.player instanceof EntityPlayerMP) {
+      EntityPlayerMP serverPlayer = (EntityPlayerMP) event.player;
+
+      // player spawns with scroll in inventory
+      if (!serverPlayer.getTags().contains("tailed_beast_scroll_given")) {
+
+        serverPlayer.addItemStackToInventory(new ItemStack(SCROLL));
+
+        serverPlayer.addTag("tailed_beast_scroll_given");
+      }
+    }
   }
 }
