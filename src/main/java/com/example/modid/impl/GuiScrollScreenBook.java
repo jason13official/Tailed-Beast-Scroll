@@ -125,12 +125,13 @@ public class GuiScrollScreenBook extends GuiScreen {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     this.mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
-    this.drawModalRectWithCustomSizedTexture(i, j, 0, 0, this.xSize, this.ySize, 480, 270);
+    this.drawScaledCustomSizeModalRect(i, j, 0, 0, 480, 270, this.xSize, this.ySize, 480, 270);
 
     if (this.tailedBeasts != null && this.tailedBeasts.length > 0) {
       // Large entity preview on left page
       EntityTailedBeast.Base beast = this.tailedBeasts[this.selectedBeastIndex];
       int scale = computePreviewScale(beast);
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       GuiInventory.drawEntityOnScreen(i + 80, j + 130, scale,
           (float)(i + 80) - this.oldMouseX, (float)(j + 80) - this.oldMouseY, beast);
 
@@ -147,6 +148,7 @@ public class GuiScrollScreenBook extends GuiScreen {
 
         EntityTailedBeast.Base thumb = this.tailedBeasts[idx];
         int thumbScale = Math.max(1, (int)((ICON_SIZE - 8) / (thumb.height > 0 ? thumb.height : 1.0F)));
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GuiInventory.drawEntityOnScreen(sx + ICON_SIZE / 2, sy + ICON_SIZE - 2, thumbScale,
             (float)(sx + ICON_SIZE / 2) - this.oldMouseX,
             (float)(sy + ICON_SIZE - 2 - 10) - this.oldMouseY, thumb);
