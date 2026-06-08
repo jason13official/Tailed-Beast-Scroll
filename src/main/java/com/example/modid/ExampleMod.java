@@ -1,19 +1,16 @@
 package com.example.modid;
 
 import com.example.modid.api.IHasModel;
-import com.example.modid.impl.ItemBase;
-import com.example.modid.proxy.ClientProxyExampleMod;
+import com.example.modid.impl.ItemScroll;
 import com.example.modid.proxy.CommonProxy;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -21,7 +18,6 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +26,7 @@ public class ExampleMod {
 
   public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
   public static final List<Item> ITEMS = new ArrayList<>();
-  public static final Item SCROLL = new ItemBase("scroll");
+  public static final Item SCROLL = new ItemScroll("scroll");
 
   @Instance
   public static ExampleMod instance;
@@ -71,7 +67,7 @@ public class ExampleMod {
       EntityPlayerMP serverPlayer = (EntityPlayerMP) event.player;
 
       // player spawns with scroll in inventory
-      if (!serverPlayer.getTags().contains("tailed_beast_scroll_given")) {
+      if (!serverPlayer.inventory.hasItemStack(new ItemStack(SCROLL)) && !serverPlayer.getTags().contains("tailed_beast_scroll_given")) {
 
         serverPlayer.addItemStackToInventory(new ItemStack(SCROLL));
 
