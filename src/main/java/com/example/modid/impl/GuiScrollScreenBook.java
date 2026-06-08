@@ -30,6 +30,22 @@ public class GuiScrollScreenBook extends GuiScreen {
   public static final int GUIID = 0;
 
   private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Tags.MOD_ID, "textures/gui/background.png");
+  private static final ResourceLocation[] BIJUU_ICONS = {
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu1_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu2_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu3_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu4_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu5_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu6_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu7_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu8_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu9_yellowed.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu10_yellowed.png")
+  };
+  private static final int[][] BIJUU_SIZES = {
+    {52, 54}, {56, 54}, {54, 54}, {58, 54}, {56, 54},
+    {50, 54}, {68, 66}, {52, 54}, {52, 54}, {119, 66}
+  };
 
   protected int xSize = 320;
   protected int ySize = 180;
@@ -120,45 +136,53 @@ public class GuiScrollScreenBook extends GuiScreen {
   @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-    int i = this.guiLeft;
-    int j = this.guiTop;
+    doDrawScreen(this, mouseX, mouseY, partialTicks);
+    super.drawScreen(mouseX, mouseY, partialTicks);
+    this.oldMouseX = (float) mouseX;
+    this.oldMouseY = (float) mouseY;
+  }
+
+  private static void doDrawScreen(GuiScrollScreenBook guiScrollScreenBook, int mouseX, int mouseY, float partialTicks) {
+    int i = guiScrollScreenBook.guiLeft;
+    int j = guiScrollScreenBook.guiTop;
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
-    this.drawScaledCustomSizeModalRect(i, j, 0, 0, 480, 270, this.xSize, this.ySize, 480, 270);
+    guiScrollScreenBook.mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
+    guiScrollScreenBook.drawScaledCustomSizeModalRect(i - 40, j - 40, 0, 0, 480 + 20, 270 + 20, guiScrollScreenBook.xSize, guiScrollScreenBook.ySize, 480 * 1.2f, 270 * 1.2f);
 
-    if (this.tailedBeasts != null && this.tailedBeasts.length > 0) {
+    if (guiScrollScreenBook.tailedBeasts != null && guiScrollScreenBook.tailedBeasts.length > 0) {
       // Large entity preview on left page
-      EntityTailedBeast.Base beast = this.tailedBeasts[this.selectedBeastIndex];
-      int scale = computePreviewScale(beast);
+      EntityTailedBeast.Base beast = guiScrollScreenBook.tailedBeasts[guiScrollScreenBook.selectedBeastIndex];
+      int scale = guiScrollScreenBook.computePreviewScale(beast);
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       GuiInventory.drawEntityOnScreen(i + 80, j + 130, scale,
-          (float)(i + 80) - this.oldMouseX, (float)(j + 80) - this.oldMouseY, beast);
+          (float)(i + 80) - guiScrollScreenBook.oldMouseX, (float)(j + 80) - guiScrollScreenBook.oldMouseY, beast);
 
       // 10 icon slots on right page
-      for (int idx = 0; idx < this.tailedBeasts.length; idx++) {
-        int[] pos = getSlotPos(idx);
+      for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
+        int[] pos = guiScrollScreenBook.getSlotPos(idx);
         int sx = pos[0], sy = pos[1];
 
-        if (idx == this.selectedBeastIndex) {
+        if (idx == guiScrollScreenBook.selectedBeastIndex) {
           drawRect(sx - 2, sy - 2, sx + ICON_SIZE + 2, sy + ICON_SIZE + 2, 0xFFFFDD00);
         }
         drawRect(sx - 1, sy - 1, sx + ICON_SIZE + 1, sy + ICON_SIZE + 1, 0xFF333333);
         drawRect(sx, sy, sx + ICON_SIZE, sy + ICON_SIZE, 0x55000000);
 
-        EntityTailedBeast.Base thumb = this.tailedBeasts[idx];
-        int thumbScale = Math.max(1, (int)((ICON_SIZE - 8) / (thumb.height > 0 ? thumb.height : 1.0F)));
+        // Entity thumbnail (commented out — replaced with placeholder textures)
+        // EntityTailedBeast.Base thumb = this.tailedBeasts[idx];
+        // int thumbScale = Math.max(1, (int)((ICON_SIZE - 8) / (thumb.height > 0 ? thumb.height : 1.0F)));
+        // GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        // GuiInventory.drawEntityOnScreen(sx + ICON_SIZE / 2, sy + ICON_SIZE - 2, thumbScale,
+        //     (float)(sx + ICON_SIZE / 2) - this.oldMouseX,
+        //     (float)(sy + ICON_SIZE - 2 - 10) - this.oldMouseY, thumb);
+
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiInventory.drawEntityOnScreen(sx + ICON_SIZE / 2, sy + ICON_SIZE - 2, thumbScale,
-            (float)(sx + ICON_SIZE / 2) - this.oldMouseX,
-            (float)(sy + ICON_SIZE - 2 - 10) - this.oldMouseY, thumb);
+        guiScrollScreenBook.mc.getTextureManager().bindTexture(BIJUU_ICONS[idx]);
+        int iconW = BIJUU_SIZES[idx][0], iconH = BIJUU_SIZES[idx][1];
+        guiScrollScreenBook.drawScaledCustomSizeModalRect(sx, sy, 0, 0, iconW, iconH, ICON_SIZE, ICON_SIZE, iconW, iconH);
       }
     }
-
-    super.drawScreen(mouseX, mouseY, partialTicks);
-
-    this.oldMouseX = (float)mouseX;
-    this.oldMouseY = (float)mouseY;
   }
 
   private int computePreviewScale(EntityTailedBeast.Base beast) {
