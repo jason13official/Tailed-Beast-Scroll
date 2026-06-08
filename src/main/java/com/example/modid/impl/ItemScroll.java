@@ -31,7 +31,7 @@ public class ItemScroll extends Item implements IHasModel {
   @Override
   public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
-    System.out.println("player attempted to use tailed beast scroll, should open screen");
+    playerIn.openGui(ExampleMod.instance, GuiScrollScreenBook.GUIID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 
     return super.onItemRightClick(worldIn, playerIn, handIn);
   }
