@@ -148,7 +148,7 @@ public class GuiScrollScreenBook extends GuiScreen {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     guiScrollScreenBook.mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
-    guiScrollScreenBook.drawScaledCustomSizeModalRect(i - 40, j - 40, 0, 0, 480 + 20, 270 + 20, guiScrollScreenBook.xSize, guiScrollScreenBook.ySize, 480 * 1.2f, 270 * 1.2f);
+    guiScrollScreenBook.drawScaledCustomSizeModalRect(i - 20, j - 20, 0, 0, 960, 540, guiScrollScreenBook.xSize + 40, guiScrollScreenBook.ySize + 40, 960, 540);
 
     if (guiScrollScreenBook.tailedBeasts != null && guiScrollScreenBook.tailedBeasts.length > 0) {
       // Large entity preview on left page
