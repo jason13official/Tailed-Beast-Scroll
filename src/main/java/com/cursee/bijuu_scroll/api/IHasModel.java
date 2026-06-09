@@ -1,4 +1,4 @@
-package com.example.modid.api;
+package com.cursee.bijuu_scroll.api;
 
 public interface IHasModel {
 

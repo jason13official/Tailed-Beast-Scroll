@@ -1,6 +1,6 @@
-package com.example.modid.impl;
+package com.cursee.bijuu_scroll.impl;
 
-import com.example.modid.ExampleMod;
+import com.cursee.bijuu_scroll.BijuuScroll;
 import com.example.modid.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,7 +26,7 @@ import net.narutomod.entity.EntityTwoTails;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.example.modid.proxy.ClientProxyExampleMod;
+import com.cursee.bijuu_scroll.proxy.ClientProxyExampleMod;
 import java.io.IOException;
 
 public class GuiScrollScreenBook extends GuiScreen {
@@ -193,7 +193,7 @@ public class GuiScrollScreenBook extends GuiScreen {
             }
             if (allUnlocked) {
               ClientProxyExampleMod.BEAST_UNLOCKED.put(9, true);
-              ExampleMod.TEN_TAILS_VIEWABLE.set(true);
+              BijuuScroll.TEN_TAILS_VIEWABLE.set(true);
             }
           }
         }
@@ -266,7 +266,7 @@ public class GuiScrollScreenBook extends GuiScreen {
           (int)(ENTITY_WINDOW_H * scaleH)
       );
 
-      if (guiScrollScreenBook.selectedBeastIndex != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
+      if (guiScrollScreenBook.selectedBeastIndex != 9 || BijuuScroll.TEN_TAILS_VIEWABLE.get()) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       } else {
         GlStateManager.color(0.0f, 0.0f, 0.0f, 1.0F);
@@ -302,7 +302,7 @@ public class GuiScrollScreenBook extends GuiScreen {
       GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
       boolean tenTailsVisible = guiScrollScreenBook.selectedBeastIndex != 9
-          || ExampleMod.TEN_TAILS_VIEWABLE.get();
+          || BijuuScroll.TEN_TAILS_VIEWABLE.get();
 
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       String loreText = tenTailsVisible ? BEAST_LORE[guiScrollScreenBook.selectedBeastIndex] : "Unknown appearance.";
@@ -356,7 +356,7 @@ public class GuiScrollScreenBook extends GuiScreen {
         boolean unlocked = ClientProxyExampleMod.BEAST_UNLOCKED.getOrDefault(idx, false);
         if (unlocked) {
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        } else if (idx != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
+        } else if (idx != 9 || BijuuScroll.TEN_TAILS_VIEWABLE.get()) {
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         } else {
           GlStateManager.color(0.0f, 0.0f, 0.0f, 1.0F);

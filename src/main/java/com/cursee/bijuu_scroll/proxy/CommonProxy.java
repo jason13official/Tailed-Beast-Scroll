@@ -1,4 +1,4 @@
-package com.example.modid.proxy;
+package com.cursee.bijuu_scroll.proxy;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

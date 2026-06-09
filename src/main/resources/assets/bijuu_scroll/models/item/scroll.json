@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "modid:items/scroll_new"
+    "layer0": "bijuu_scroll:items/scroll_new"
   }
 }

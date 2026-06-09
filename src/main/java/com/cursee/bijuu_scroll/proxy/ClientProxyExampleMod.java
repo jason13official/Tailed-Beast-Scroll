@@ -1,4 +1,4 @@
-package com.example.modid.proxy;
+package com.cursee.bijuu_scroll.proxy;
 
 import java.util.HashMap;
 import java.util.Map;

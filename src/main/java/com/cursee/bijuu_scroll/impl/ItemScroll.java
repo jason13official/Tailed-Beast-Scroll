@@ -1,8 +1,8 @@
-package com.example.modid.impl;
+package com.cursee.bijuu_scroll.impl;
 
-import com.example.modid.ExampleMod;
-import com.example.modid.Tags;
-import com.example.modid.api.IHasModel;
+import com.cursee.bijuu_scroll.BijuuScroll;
+import com.cursee.bijuu_scroll.Tags;
+import com.cursee.bijuu_scroll.api.IHasModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,18 +20,18 @@ public class ItemScroll extends Item implements IHasModel {
     setTranslationKey(Tags.MOD_ID + ".scroll");
     setCreativeTab(CreativeTabs.MATERIALS);
 
-    ExampleMod.ITEMS.add(this);
+    BijuuScroll.ITEMS.add(this);
   }
 
   @Override
   public void registerModels() {
-    ExampleMod.proxy.registerItemModel(this, 0, "inventory");
+    BijuuScroll.proxy.registerItemModel(this, 0, "inventory");
   }
 
   @Override
   public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
-    playerIn.openGui(ExampleMod.instance, GuiScrollScreenBook.GUIID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+    playerIn.openGui(BijuuScroll.instance, GuiScrollScreenBook.GUIID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 
     return super.onItemRightClick(worldIn, playerIn, handIn);
   }

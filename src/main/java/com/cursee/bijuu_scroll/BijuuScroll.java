@@ -1,9 +1,9 @@
-package com.example.modid;
+package com.cursee.bijuu_scroll;
 
-import com.example.modid.api.IHasModel;
-import com.example.modid.impl.GuiHandler;
-import com.example.modid.impl.ItemScroll;
-import com.example.modid.proxy.CommonProxy;
+import com.cursee.bijuu_scroll.api.IHasModel;
+import com.cursee.bijuu_scroll.impl.GuiHandler;
+import com.cursee.bijuu_scroll.impl.ItemScroll;
+import com.cursee.bijuu_scroll.proxy.CommonProxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,7 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION)
-public class ExampleMod {
+public class BijuuScroll {
 
   public static final AtomicBoolean TEN_TAILS_VIEWABLE = new AtomicBoolean(false);
 
@@ -34,11 +34,11 @@ public class ExampleMod {
   public static final Item SCROLL = new ItemScroll("scroll");
 
   @Instance
-  public static ExampleMod instance;
+  public static BijuuScroll instance;
 
   @SidedProxy(
-      clientSide = "com.example.modid.proxy.ClientProxyExampleMod",
-      serverSide = "com.example.modid.proxy.ServerProxyExampleMod"
+      clientSide = "com.cursee.bijuu_scroll.proxy.ClientProxyExampleMod",
+      serverSide = "com.cursee.bijuu_scroll.proxy.ServerProxyExampleMod"
   )
   public static CommonProxy proxy;
 

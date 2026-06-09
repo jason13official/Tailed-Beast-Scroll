@@ -1,4 +1,4 @@
-package com.example.modid.impl;
+package com.cursee.bijuu_scroll.impl;
 
 import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
