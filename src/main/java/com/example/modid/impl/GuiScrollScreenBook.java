@@ -70,15 +70,15 @@ public class GuiScrollScreenBook extends GuiScreen {
     "Six-Tails", "Seven-Tails", "Eight-Tails", "Nine-Tails", "Ten-Tails"
   };
   private static final String[] BEAST_RATINGS = {
-    "★☆☆☆☆",                                           // 1-tail:  ★☆☆☆☆
-    "★★☆☆☆",                                           // 2-tails: ★★☆☆☆
-    "★★☆☆☆",                                           // 3-tails: ★★☆☆☆
-    "★★★☆☆",                                           // 4-tails: ★★★☆☆
-    "★★★☆☆",                                           // 5-tails: ★★★☆☆
-    "★★★☆☆",                                           // 6-tails: ★★★☆☆
-    "★★★★☆",                                           // 7-tails: ★★★★☆
-    "★★★★★",                                           // 8-tails: ★★★★★
-    "★★★★★",                                           // 9-tails: ★★★★★
+    "✦✧✧✧✧",                                           // 1-tail:  ✦✧✧✧✧
+    "✦✦✧✧✧",                                           // 2-tails: ✦✦✧✧✧
+    "✦✦✧✧✧",                                           // 3-tails: ✦✦✧✧✧
+    "✦✦✦✧✧",                                           // 4-tails: ✦✦✦✧✧
+    "✦✦✦✧✧",                                           // 5-tails: ✦✦✦✧✧
+    "✦✦✦✧✧",                                           // 6-tails: ✦✦✦✧✧
+    "✦✦✦✦✧",                                           // 7-tails: ✦✦✦✦✧
+    "✦✦✦✦✦",                                           // 8-tails: ✦✦✦✦✦
+    "✦✦✦✦✦",                                           // 9-tails: ✦✦✦✦✦
     "✦✦✦✦✦✦✦✦✦"                   // 10-tails: ✦✦✦✦✦✦✦✦✦
   };
   private static final int RATING_COLOR_NORMAL   = 0xB8860B; // dark goldenrod
@@ -266,12 +266,18 @@ public class GuiScrollScreenBook extends GuiScreen {
       int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
       int nameY = j + guiScrollScreenBook.ySize - 38;
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName : "?????", centerX, nameY, 0x5C3A1E, false);
-      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? altName : "?????", centerX, nameY + 10, 0x8B6914, false);
+
+      String unknownText = "?????";
+      // guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName : "?????", centerX, nameY, 0x5C3A1E, false);
+      // guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? altName : "?????", centerX, nameY + 10, 0x8B6914, false);
+
+      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName + " - " + altName : "?????", centerX, nameY, 0x5C3A1E, false);
+
       boolean isTenTails = guiScrollScreenBook.selectedBeastIndex == 9;
       String rating = tenTailsVisible ? BEAST_RATINGS[guiScrollScreenBook.selectedBeastIndex] : "?????";
       int ratingColor = isTenTails ? RATING_COLOR_TEN_TAILS : RATING_COLOR_NORMAL;
-      guiScrollScreenBook.fontRenderer.drawString(rating, centerX, nameY + 20, ratingColor, false);
+      // guiScrollScreenBook.fontRenderer.drawString(rating, centerX, nameY + 20, ratingColor, false);
+      guiScrollScreenBook.fontRenderer.drawString(rating, centerX, nameY + 10, ratingColor, false);
 
       // 10 icon slots on right page
       for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
