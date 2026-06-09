@@ -56,7 +56,7 @@ public class GuiScrollScreenBook extends GuiScreen {
 
   private static final int ICON_SIZE = 28;
   private static final int ICON_GAP = 3;
-  private static final int ICON_START_X = 171;
+  private static final int ICON_START_X = 171 - 4;
   private static final int ICON_START_Y = 34;
 
   private EntityTailedBeast.Base[] tailedBeasts;
@@ -153,10 +153,13 @@ public class GuiScrollScreenBook extends GuiScreen {
     if (guiScrollScreenBook.tailedBeasts != null && guiScrollScreenBook.tailedBeasts.length > 0) {
       // Large entity preview on left page
       EntityTailedBeast.Base beast = guiScrollScreenBook.tailedBeasts[guiScrollScreenBook.selectedBeastIndex];
-      int scale = guiScrollScreenBook.computePreviewScale(beast);
+      int scale = guiScrollScreenBook.selectedBeastIndex == 9 ? 1 : 3; // guiScrollScreenBook.computePreviewScale(beast);
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-      GuiInventory.drawEntityOnScreen(i + 80, j + 130, scale,
-          (float)(i + 80) - guiScrollScreenBook.oldMouseX, (float)(j + 80) - guiScrollScreenBook.oldMouseY, beast);
+
+      int xoffset = 80 + 30;
+      int yoffset = 80 + 50 - 20;
+      GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
+          (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);
 
       // 10 icon slots on right page
       for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
@@ -166,8 +169,8 @@ public class GuiScrollScreenBook extends GuiScreen {
         if (idx == guiScrollScreenBook.selectedBeastIndex) {
           drawRect(sx - 2, sy - 2, sx + ICON_SIZE + 2, sy + ICON_SIZE + 2, 0xFFFFDD00);
         }
-        drawRect(sx - 1, sy - 1, sx + ICON_SIZE + 1, sy + ICON_SIZE + 1, 0xFF333333);
-        drawRect(sx, sy, sx + ICON_SIZE, sy + ICON_SIZE, 0x55000000);
+        // drawRect(sx - 1, sy - 1, sx + ICON_SIZE + 1, sy + ICON_SIZE + 1, 0xFF333333);
+        // drawRect(sx, sy, sx + ICON_SIZE, sy + ICON_SIZE, 0x55000000);
 
         // Entity thumbnail (commented out — replaced with placeholder textures)
         // EntityTailedBeast.Base thumb = this.tailedBeasts[idx];
