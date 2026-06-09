@@ -24,6 +24,7 @@ import net.narutomod.entity.EntityTwoTails;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.example.modid.proxy.ClientProxyExampleMod;
 import java.io.IOException;
 
 public class GuiScrollScreenBook extends GuiScreen {
@@ -42,6 +43,18 @@ public class GuiScrollScreenBook extends GuiScreen {
     new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu8_yellowed.png"),
     new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu9_yellowed.png"),
     new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu10_yellowed.png")
+  };
+  private static final ResourceLocation[] BIJUU_ICONS_COLORED = {
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu1.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu2.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu3.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu4.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu5.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu6.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu7.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu8.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu9.png"),
+    new ResourceLocation(Tags.MOD_ID, "textures/gui/bijuu10.png")
   };
   private static final int[][] BIJUU_SIZES = {
     {52, 54}, {56, 54}, {54, 54}, {58, 54}, {56, 54},
@@ -136,15 +149,32 @@ public class GuiScrollScreenBook extends GuiScreen {
   @Override
   protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
     super.mouseClicked(mouseX, mouseY, mouseButton);
-    if (mouseButton == 0 && this.tailedBeasts != null && this.tailedBeasts.length > 0) {
-      for (int idx = 0; idx < this.tailedBeasts.length; idx++) {
-        int[] pos = getSlotPos(idx);
-        int sx = pos[0], sy = pos[1];
-        int slotW = (idx == 9) ? ICON_10_W : ICON_SIZE;
-        if (mouseX >= sx && mouseX < sx + slotW && mouseY >= sy && mouseY < sy + ICON_SIZE) {
+    if (this.tailedBeasts == null || this.tailedBeasts.length == 0) return;
+    for (int idx = 0; idx < this.tailedBeasts.length; idx++) {
+      int[] pos = getSlotPos(idx);
+      int sx = pos[0], sy = pos[1];
+      int slotW = (idx == 9) ? ICON_10_W : ICON_SIZE;
+      if (mouseX >= sx && mouseX < sx + slotW && mouseY >= sy && mouseY < sy + ICON_SIZE) {
+        if (mouseButton == 0) {
           this.selectedBeastIndex = idx;
-          break;
+        } else if (mouseButton == 1) {
+          if (idx < 9) {
+            ClientProxyExampleMod.BEAST_UNLOCKED.put(idx, true);
+          } else {
+            boolean allUnlocked = true;
+            for (int k = 0; k < 9; k++) {
+              if (!ClientProxyExampleMod.BEAST_UNLOCKED.getOrDefault(k, false)) {
+                allUnlocked = false;
+                break;
+              }
+            }
+            if (allUnlocked) {
+              ClientProxyExampleMod.BEAST_UNLOCKED.put(9, true);
+              ExampleMod.TEN_TAILS_VIEWABLE.set(true);
+            }
+          }
         }
+        break;
       }
     }
   }
@@ -245,12 +275,16 @@ public class GuiScrollScreenBook extends GuiScreen {
         //     (float)(sx + ICON_SIZE / 2) - this.oldMouseX,
         //     (float)(sy + ICON_SIZE - 2 - 10) - this.oldMouseY, thumb);
 
-        if (idx != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
+        boolean unlocked = ClientProxyExampleMod.BEAST_UNLOCKED.getOrDefault(idx, false);
+        if (unlocked) {
+          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        } else if (idx != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         } else {
           GlStateManager.color(0.0f, 0.0f, 0.0f, 1.0F);
         }
-        guiScrollScreenBook.mc.getTextureManager().bindTexture(BIJUU_ICONS[idx]);
+        ResourceLocation icon = unlocked ? BIJUU_ICONS_COLORED[idx] : BIJUU_ICONS[idx];
+        guiScrollScreenBook.mc.getTextureManager().bindTexture(icon);
         int iconW = BIJUU_SIZES[idx][0], iconH = BIJUU_SIZES[idx][1];
         guiScrollScreenBook.drawScaledCustomSizeModalRect(sx, sy, 0, 0, iconW, iconH, slotW, ICON_SIZE, iconW, iconH);
       }
