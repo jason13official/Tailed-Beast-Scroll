@@ -48,6 +48,15 @@ public class GuiScrollScreenBook extends GuiScreen {
     {50, 54}, {68, 66}, {52, 54}, {52, 54}, {119, 66}
   };
 
+  private static final String[] BEAST_NAMES = {
+    "Shukaku", "Matatabi", "Isobu", "Son Gokū", "Kokuō",
+    "Saiken", "Chōmei", "Gyūki", "Kurama", "Ten-Tails"
+  };
+  private static final String[] BEAST_ALT_NAMES = {
+    "One-Tail", "Two-Tails", "Three-Tails", "Four-Tails", "Five-Tails",
+    "Six-Tails", "Seven-Tails", "Eight-Tails", "Nine-Tails", "Ten-Tails"
+  };
+
   protected int xSize = 320;
   protected int ySize = 180;
   protected int guiLeft;
@@ -174,6 +183,18 @@ public class GuiScrollScreenBook extends GuiScreen {
       int yoffset = 80 + 50 - 20 + (guiScrollScreenBook.selectedBeastIndex == 9 ? -10 : -20); // offset further upwards
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);
+
+      boolean tenTailsVisible = guiScrollScreenBook.selectedBeastIndex != 9
+          || ExampleMod.TEN_TAILS_VIEWABLE.get();
+      if (tenTailsVisible) {
+        String properName = BEAST_NAMES[guiScrollScreenBook.selectedBeastIndex];
+        String altName = BEAST_ALT_NAMES[guiScrollScreenBook.selectedBeastIndex];
+        int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
+        int nameY = j + guiScrollScreenBook.ySize - 38;
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        guiScrollScreenBook.fontRenderer.drawString(properName, centerX, nameY, 0x5C3A1E, false);
+        guiScrollScreenBook.fontRenderer.drawString(altName, centerX, nameY + 10, 0x8B6914, false);
+      }
 
       // 10 icon slots on right page
       for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
