@@ -69,6 +69,21 @@ public class GuiScrollScreenBook extends GuiScreen {
     "One-Tail", "Two-Tails", "Three-Tails", "Four-Tails", "Five-Tails",
     "Six-Tails", "Seven-Tails", "Eight-Tails", "Nine-Tails", "Ten-Tails"
   };
+  private static final String[] BEAST_RATINGS = {
+    "★☆☆☆☆",                                           // 1-tail:  ★☆☆☆☆
+    "★★☆☆☆",                                           // 2-tails: ★★☆☆☆
+    "★★☆☆☆",                                           // 3-tails: ★★☆☆☆
+    "★★★☆☆",                                           // 4-tails: ★★★☆☆
+    "★★★☆☆",                                           // 5-tails: ★★★☆☆
+    "★★★☆☆",                                           // 6-tails: ★★★☆☆
+    "★★★★☆",                                           // 7-tails: ★★★★☆
+    "★★★★★",                                           // 8-tails: ★★★★★
+    "★★★★★",                                           // 9-tails: ★★★★★
+    "✦✦✦✦✦✦✦✦✦"                   // 10-tails: ✦✦✦✦✦✦✦✦✦
+  };
+  private static final int RATING_COLOR_NORMAL   = 0xB8860B; // dark goldenrod
+  private static final int RATING_COLOR_TEN_TAILS = 0xCC2200; // deep red — off the charts
+
   private static final String[] BEAST_LORE = {
     "A massive one-tailed tanuki made of living sand with dark markings and star-shaped eyes.",
     "A graceful two-tailed cat formed from brilliant blue flames with glowing yellow eyes.",
@@ -253,6 +268,10 @@ public class GuiScrollScreenBook extends GuiScreen {
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName : "?????", centerX, nameY, 0x5C3A1E, false);
       guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? altName : "?????", centerX, nameY + 10, 0x8B6914, false);
+      boolean isTenTails = guiScrollScreenBook.selectedBeastIndex == 9;
+      String rating = tenTailsVisible ? BEAST_RATINGS[guiScrollScreenBook.selectedBeastIndex] : "?????";
+      int ratingColor = isTenTails ? RATING_COLOR_TEN_TAILS : RATING_COLOR_NORMAL;
+      guiScrollScreenBook.fontRenderer.drawString(rating, centerX, nameY + 20, ratingColor, false);
 
       // 10 icon slots on right page
       for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
