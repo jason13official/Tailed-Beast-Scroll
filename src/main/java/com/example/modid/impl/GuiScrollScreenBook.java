@@ -56,6 +56,18 @@ public class GuiScrollScreenBook extends GuiScreen {
     "One-Tail", "Two-Tails", "Three-Tails", "Four-Tails", "Five-Tails",
     "Six-Tails", "Seven-Tails", "Eight-Tails", "Nine-Tails", "Ten-Tails"
   };
+  private static final String[] BEAST_LORE = {
+    "A massive one-tailed tanuki made of living sand with dark markings and star-shaped eyes.",
+    "A graceful two-tailed cat formed from brilliant blue flames with glowing yellow eyes.",
+    "A gigantic three-tailed turtle with a spiked shell, horned face, and armored body.",
+    "A towering four-tailed gorilla with crimson fur, green skin, and curved horns.",
+    "A majestic five-tailed beast resembling a white horse crossed with a dolphin, with blue horns.",
+    "An enormous six-tailed white slug with blue markings and long antennae.",
+    "A vibrant seven-tailed insect resembling a rhinoceros beetle with dragonfly wings.",
+    "A colossal eight-tailed ox-octopus with four horns and powerful tentacles.",
+    "A gigantic nine-tailed orange fox with crimson eyes and black facial markings.",
+    "An immense, otherworldly beast with a single eye, ten tails, and a monstrous, tree-like form."
+  };
 
   protected int xSize = 320;
   protected int ySize = 180;
@@ -170,7 +182,7 @@ public class GuiScrollScreenBook extends GuiScreen {
     if (guiScrollScreenBook.tailedBeasts != null && guiScrollScreenBook.tailedBeasts.length > 0) {
       // Large entity preview on left page
       EntityTailedBeast.Base beast = guiScrollScreenBook.tailedBeasts[guiScrollScreenBook.selectedBeastIndex];
-      int scale = guiScrollScreenBook.selectedBeastIndex == 9 ? 1 : 3; // guiScrollScreenBook.computePreviewScale(beast);
+      int scale = guiScrollScreenBook.selectedBeastIndex == 9 ? 1 : 2; // guiScrollScreenBook.computePreviewScale(beast);
 
       // GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       if (guiScrollScreenBook.selectedBeastIndex != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
@@ -181,11 +193,29 @@ public class GuiScrollScreenBook extends GuiScreen {
 
       int xoffset = 80 + 30;
       int yoffset = 80 + 50 - 20 + (guiScrollScreenBook.selectedBeastIndex == 9 ? -10 : -20); // offset further upwards
+      GlStateManager.pushMatrix();
+      // if (guiScrollScreenBook.selectedBeastIndex == 9) {
+      if (true) {
+        GlStateManager.translate(30, 10, 20);
+        GlStateManager.scale(0.8, 0.8, 0.8);
+      }
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);
+      GlStateManager.popMatrix();
 
       boolean tenTailsVisible = guiScrollScreenBook.selectedBeastIndex != 9
           || ExampleMod.TEN_TAILS_VIEWABLE.get();
+
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      String loreText = tenTailsVisible ? BEAST_LORE[guiScrollScreenBook.selectedBeastIndex] : "Unknown appearance.";
+      int loreX = i + 8 + 55;
+      int loreY = j + 93 - 10;
+      java.util.List<String> loreLines = guiScrollScreenBook.fontRenderer.listFormattedStringToWidth(loreText, 100);
+      for (String line : loreLines) {
+        guiScrollScreenBook.fontRenderer.drawString(line, loreX, loreY, 0x5C3A1E, false);
+        loreY += guiScrollScreenBook.fontRenderer.FONT_HEIGHT;
+      }
+
       String properName = BEAST_NAMES[guiScrollScreenBook.selectedBeastIndex];
       String altName = BEAST_ALT_NAMES[guiScrollScreenBook.selectedBeastIndex];
       int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
