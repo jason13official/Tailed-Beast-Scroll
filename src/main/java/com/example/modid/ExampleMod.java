@@ -6,6 +6,7 @@ import com.example.modid.impl.ItemScroll;
 import com.example.modid.proxy.CommonProxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,8 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION)
 public class ExampleMod {
+
+  public static final AtomicBoolean TEN_TAILS_VIEWABLE = new AtomicBoolean(false);
 
   public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
   public static final List<Item> ITEMS = new ArrayList<>();

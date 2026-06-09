@@ -1,5 +1,6 @@
 package com.example.modid.impl;
 
+import com.example.modid.ExampleMod;
 import com.example.modid.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,6 +59,7 @@ public class GuiScrollScreenBook extends GuiScreen {
   private static final int ICON_GAP = 3;
   private static final int ICON_START_X = 171 - 4;
   private static final int ICON_START_Y = 34;
+  private static final int ICON_10_W = 50; // bijuu10 wider slot (119:66 ratio → ~50px at ICON_SIZE height)
 
   private EntityTailedBeast.Base[] tailedBeasts;
   private int selectedBeastIndex = 0;
@@ -99,8 +101,13 @@ public class GuiScrollScreenBook extends GuiScreen {
   }
 
   private int[] getSlotPos(int index) {
-    int row = index < 9 ? index / 3 : 3;
-    int col = index < 9 ? index % 3 : 1;
+    if (index == 9) {
+      int gridWidth = 3 * ICON_SIZE + 2 * ICON_GAP;
+      return new int[]{ guiLeft + ICON_START_X + (gridWidth - ICON_10_W) / 2,
+                        guiTop  + ICON_START_Y + 3 * (ICON_SIZE + ICON_GAP) };
+    }
+    int row = index / 3;
+    int col = index % 3;
     return new int[]{ guiLeft + ICON_START_X + col * (ICON_SIZE + ICON_GAP),
                       guiTop  + ICON_START_Y + row * (ICON_SIZE + ICON_GAP) };
   }
@@ -112,7 +119,8 @@ public class GuiScrollScreenBook extends GuiScreen {
       for (int idx = 0; idx < this.tailedBeasts.length; idx++) {
         int[] pos = getSlotPos(idx);
         int sx = pos[0], sy = pos[1];
-        if (mouseX >= sx && mouseX < sx + ICON_SIZE && mouseY >= sy && mouseY < sy + ICON_SIZE) {
+        int slotW = (idx == 9) ? ICON_10_W : ICON_SIZE;
+        if (mouseX >= sx && mouseX < sx + slotW && mouseY >= sy && mouseY < sy + ICON_SIZE) {
           this.selectedBeastIndex = idx;
           break;
         }
@@ -154,10 +162,16 @@ public class GuiScrollScreenBook extends GuiScreen {
       // Large entity preview on left page
       EntityTailedBeast.Base beast = guiScrollScreenBook.tailedBeasts[guiScrollScreenBook.selectedBeastIndex];
       int scale = guiScrollScreenBook.selectedBeastIndex == 9 ? 1 : 3; // guiScrollScreenBook.computePreviewScale(beast);
-      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+      // GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      if (guiScrollScreenBook.selectedBeastIndex != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      } else {
+        GlStateManager.color(0.0f, 0.0f, 0.0f, 1.0F);
+      }
 
       int xoffset = 80 + 30;
-      int yoffset = 80 + 50 - 20;
+      int yoffset = 80 + 50 - 20 + (guiScrollScreenBook.selectedBeastIndex == 9 ? -10 : -20); // offset further upwards
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);
 
@@ -166,11 +180,13 @@ public class GuiScrollScreenBook extends GuiScreen {
         int[] pos = guiScrollScreenBook.getSlotPos(idx);
         int sx = pos[0], sy = pos[1];
 
+        int slotW = (idx == 9) ? ICON_10_W : ICON_SIZE;
+
         if (idx == guiScrollScreenBook.selectedBeastIndex) {
-          drawRect(sx - 2, sy - 2, sx + ICON_SIZE + 2, sy + ICON_SIZE + 2, 0xFFFFDD00);
+          drawRect(sx - 2, sy - 2, sx + slotW + 2, sy + ICON_SIZE + 2, 0xFFFFDD00);
         }
-        // drawRect(sx - 1, sy - 1, sx + ICON_SIZE + 1, sy + ICON_SIZE + 1, 0xFF333333);
-        // drawRect(sx, sy, sx + ICON_SIZE, sy + ICON_SIZE, 0x55000000);
+        // drawRect(sx - 1, sy - 1, sx + slotW + 1, sy + ICON_SIZE + 1, 0xFF333333);
+        // drawRect(sx, sy, sx + slotW, sy + ICON_SIZE, 0x55000000);
 
         // Entity thumbnail (commented out — replaced with placeholder textures)
         // EntityTailedBeast.Base thumb = this.tailedBeasts[idx];
@@ -180,10 +196,14 @@ public class GuiScrollScreenBook extends GuiScreen {
         //     (float)(sx + ICON_SIZE / 2) - this.oldMouseX,
         //     (float)(sy + ICON_SIZE - 2 - 10) - this.oldMouseY, thumb);
 
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        if (idx != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
+          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        } else {
+          GlStateManager.color(0.0f, 0.0f, 0.0f, 1.0F);
+        }
         guiScrollScreenBook.mc.getTextureManager().bindTexture(BIJUU_ICONS[idx]);
         int iconW = BIJUU_SIZES[idx][0], iconH = BIJUU_SIZES[idx][1];
-        guiScrollScreenBook.drawScaledCustomSizeModalRect(sx, sy, 0, 0, iconW, iconH, ICON_SIZE, ICON_SIZE, iconW, iconH);
+        guiScrollScreenBook.drawScaledCustomSizeModalRect(sx, sy, 0, 0, iconW, iconH, slotW, ICON_SIZE, iconW, iconH);
       }
     }
   }
