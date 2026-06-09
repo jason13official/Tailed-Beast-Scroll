@@ -4,8 +4,10 @@ import com.example.modid.ExampleMod;
 import com.example.modid.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -62,8 +64,8 @@ public class GuiScrollScreenBook extends GuiScreen {
   };
 
   private static final String[] BEAST_NAMES = {
-    "Shukaku", "Matatabi", "Isobu", "Son Gokū", "Kokuō",
-    "Saiken", "Chōmei", "Gyūki", "Kurama", "Ten-Tails"
+    "Shukaku", "Matatabi", "Isobu", "Son Goku", "Kokuo",
+    "Saiken", "Chomei", "Gyuki", "Kurama", "Ten-Tails"
   };
   private static final String[] BEAST_ALT_NAMES = {
     "One-Tail", "Two-Tails", "Three-Tails", "Four-Tails", "Five-Tails",
@@ -109,6 +111,12 @@ public class GuiScrollScreenBook extends GuiScreen {
   private static final int ICON_START_X = 171 - 4;
   private static final int ICON_START_Y = 34;
   private static final int ICON_10_W = 50; // bijuu10 wider slot (119:66 ratio → ~50px at ICON_SIZE height)
+
+  private static final int ENTITY_WINDOW_X = 60;
+  private static final int ENTITY_WINDOW_Y = 20;
+  private static final int ENTITY_WINDOW_W = 100;
+  private static final int ENTITY_WINDOW_H = 60;
+  private static final int ENTITY_WINDOW_COLOR = 0xFF9A8878;
 
   private EntityTailedBeast.Base[] tailedBeasts;
   private int selectedBeastIndex = 0;
@@ -229,7 +237,35 @@ public class GuiScrollScreenBook extends GuiScreen {
       EntityTailedBeast.Base beast = guiScrollScreenBook.tailedBeasts[guiScrollScreenBook.selectedBeastIndex];
       int scale = guiScrollScreenBook.selectedBeastIndex == 9 ? 1 : 2; // guiScrollScreenBook.computePreviewScale(beast);
 
-      // GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      drawRect(i + ENTITY_WINDOW_X, j + ENTITY_WINDOW_Y,
+               i + ENTITY_WINDOW_X + ENTITY_WINDOW_W,
+               j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H,
+          0x889A8878);
+
+      drawRect(i + ENTITY_WINDOW_X, j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H - 1,
+          i + ENTITY_WINDOW_X + ENTITY_WINDOW_W,
+          j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H + 1,
+          0xAA000000
+          );
+
+//      drawRect(i + ENTITY_WINDOW_X, j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H - 1,
+//          i + ENTITY_WINDOW_X + ENTITY_WINDOW_W,
+//          j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H + 1,
+//          ENTITY_WINDOW_COLOR
+//          );
+
+      Minecraft mc = guiScrollScreenBook.mc;
+      ScaledResolution sr = new ScaledResolution(mc);
+      double scaleW = (double) mc.displayWidth  / sr.getScaledWidth_double();
+      double scaleH = (double) mc.displayHeight / sr.getScaledHeight_double();
+      GL11.glEnable(GL11.GL_SCISSOR_TEST);
+      GL11.glScissor(
+          (int)((i + ENTITY_WINDOW_X) * scaleW),
+          (int)(mc.displayHeight - (j + ENTITY_WINDOW_Y + ENTITY_WINDOW_H) * scaleH),
+          (int)(ENTITY_WINDOW_W * scaleW),
+          (int)(ENTITY_WINDOW_H * scaleH)
+      );
+
       if (guiScrollScreenBook.selectedBeastIndex != 9 || ExampleMod.TEN_TAILS_VIEWABLE.get()) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       } else {
@@ -238,22 +274,39 @@ public class GuiScrollScreenBook extends GuiScreen {
 
       int xoffset = 80 + 30;
       int yoffset = 80 + 50 - 20 + (guiScrollScreenBook.selectedBeastIndex == 9 ? -10 : -20); // offset further upwards
+
+
       GlStateManager.pushMatrix();
-      // if (guiScrollScreenBook.selectedBeastIndex == 9) {
-      if (true) {
-        GlStateManager.translate(30, 10, 20);
-        GlStateManager.scale(0.8, 0.8, 0.8);
+
+      // normal offsets
+      GlStateManager.translate(30, 10, 20);
+      GlStateManager.scale(0.8, 0.8, 0.8);
+
+      switch (guiScrollScreenBook.selectedBeastIndex) {
+        case 0: GlStateManager.translate(0, 2, 0);
+        case 1: ;
+        case 2: ;
+        case 3: GlStateManager.translate(0, -5, 0);
+        case 4: ;
+        case 5: ;
+        case 6: GlStateManager.translate(0, -5, 0);
+        case 7: ;
+        case 8: GlStateManager.translate(0, -5, 0);
+        case 9: GlStateManager.translate(0, -5, 0);
       }
+
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);
       GlStateManager.popMatrix();
+
+      GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
       boolean tenTailsVisible = guiScrollScreenBook.selectedBeastIndex != 9
           || ExampleMod.TEN_TAILS_VIEWABLE.get();
 
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       String loreText = tenTailsVisible ? BEAST_LORE[guiScrollScreenBook.selectedBeastIndex] : "Unknown appearance.";
-      int loreX = i + 8 + 55;
+      int loreX = i + 8 + 53;
       int loreY = j + 93 - 10;
       java.util.List<String> loreLines = guiScrollScreenBook.fontRenderer.listFormattedStringToWidth(loreText, 100);
       for (String line : loreLines) {
@@ -263,7 +316,7 @@ public class GuiScrollScreenBook extends GuiScreen {
 
       String properName = BEAST_NAMES[guiScrollScreenBook.selectedBeastIndex];
       String altName = BEAST_ALT_NAMES[guiScrollScreenBook.selectedBeastIndex];
-      int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
+      int centerX = (i + guiScrollScreenBook.xSize / 4) - 19;
       int nameY = j + guiScrollScreenBook.ySize - 38;
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -271,7 +324,7 @@ public class GuiScrollScreenBook extends GuiScreen {
       // guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName : "?????", centerX, nameY, 0x5C3A1E, false);
       // guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? altName : "?????", centerX, nameY + 10, 0x8B6914, false);
 
-      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName + " - " + altName : "?????", centerX, nameY, 0x5C3A1E, false);
+      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName + ":" + altName : "?????", centerX, nameY, 0x5C3A1E, false);
 
       boolean isTenTails = guiScrollScreenBook.selectedBeastIndex == 9;
       String rating = tenTailsVisible ? BEAST_RATINGS[guiScrollScreenBook.selectedBeastIndex] : "?????";
