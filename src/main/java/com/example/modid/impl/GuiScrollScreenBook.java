@@ -186,15 +186,13 @@ public class GuiScrollScreenBook extends GuiScreen {
 
       boolean tenTailsVisible = guiScrollScreenBook.selectedBeastIndex != 9
           || ExampleMod.TEN_TAILS_VIEWABLE.get();
-      if (tenTailsVisible) {
-        String properName = BEAST_NAMES[guiScrollScreenBook.selectedBeastIndex];
-        String altName = BEAST_ALT_NAMES[guiScrollScreenBook.selectedBeastIndex];
-        int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
-        int nameY = j + guiScrollScreenBook.ySize - 38;
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        guiScrollScreenBook.fontRenderer.drawString(properName, centerX, nameY, 0x5C3A1E, false);
-        guiScrollScreenBook.fontRenderer.drawString(altName, centerX, nameY + 10, 0x8B6914, false);
-      }
+      String properName = BEAST_NAMES[guiScrollScreenBook.selectedBeastIndex];
+      String altName = BEAST_ALT_NAMES[guiScrollScreenBook.selectedBeastIndex];
+      int centerX = (i + guiScrollScreenBook.xSize / 4) - 16;
+      int nameY = j + guiScrollScreenBook.ySize - 38;
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? properName : "?????", centerX, nameY, 0x5C3A1E, false);
+      guiScrollScreenBook.fontRenderer.drawString(tenTailsVisible ? altName : "?????", centerX, nameY + 10, 0x8B6914, false);
 
       // 10 icon slots on right page
       for (int idx = 0; idx < guiScrollScreenBook.tailedBeasts.length; idx++) {
