@@ -1,7 +1,7 @@
 package com.cursee.bijuu_scroll.impl;
 
 import com.cursee.bijuu_scroll.BijuuScroll;
-import com.example.modid.Tags;
+import com.cursee.bijuu_scroll.Tags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
