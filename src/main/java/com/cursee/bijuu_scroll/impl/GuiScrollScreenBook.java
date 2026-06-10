@@ -2,6 +2,7 @@ package com.cursee.bijuu_scroll.impl;
 
 import com.cursee.bijuu_scroll.BijuuScroll;
 import com.cursee.bijuu_scroll.Tags;
+import com.cursee.bijuu_scroll.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -285,36 +286,8 @@ public class GuiScrollScreenBook extends GuiScreen {
       GlStateManager.translate(0, 0, 0);
 
 
-      if (guiScrollScreenBook.selectedBeastIndex == 0) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 1) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 2) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 3) {
-        GlStateManager.translate(0, -10, 0);
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 4) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 5) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 6) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 7) {
-        ;
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 8) {
-        GlStateManager.translate(0, -10, 0);
-      }
-      if (guiScrollScreenBook.selectedBeastIndex == 9) {
-        GlStateManager.translate(0, -5, 0);
-      }
+      int beastIdx = guiScrollScreenBook.selectedBeastIndex;
+      GlStateManager.translate(ModConfig.OFFSET_X[beastIdx], ModConfig.OFFSET_Y[beastIdx], ModConfig.OFFSET_Z[beastIdx]);
 
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);

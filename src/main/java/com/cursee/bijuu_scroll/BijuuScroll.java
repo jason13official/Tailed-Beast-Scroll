@@ -1,6 +1,7 @@
 package com.cursee.bijuu_scroll;
 
 import com.cursee.bijuu_scroll.api.IHasModel;
+import com.cursee.bijuu_scroll.config.ModConfig;
 import com.cursee.bijuu_scroll.impl.GuiHandler;
 import com.cursee.bijuu_scroll.impl.ItemScroll;
 import com.cursee.bijuu_scroll.proxy.CommonProxy;
@@ -47,6 +48,7 @@ public class BijuuScroll {
   public void preInit(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(this);
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+    ModConfig.init(event.getSuggestedConfigurationFile());
   }
 
   @Mod.EventHandler
