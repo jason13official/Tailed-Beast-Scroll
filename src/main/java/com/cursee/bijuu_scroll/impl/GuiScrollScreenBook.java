@@ -279,20 +279,41 @@ public class GuiScrollScreenBook extends GuiScreen {
       GlStateManager.pushMatrix();
 
       // normal offsets
-      GlStateManager.translate(30, 10, 20);
+      GlStateManager.translate(60, 10, 20);
       GlStateManager.scale(0.8, 0.8, 0.8);
 
-      switch (guiScrollScreenBook.selectedBeastIndex) {
-        case 0: GlStateManager.translate(0, 2, 0);
-        case 1: ;
-        case 2: ;
-        case 3: GlStateManager.translate(0, -5, 0);
-        case 4: ;
-        case 5: ;
-        case 6: GlStateManager.translate(0, -5, 0);
-        case 7: ;
-        case 8: GlStateManager.translate(0, -5, 0);
-        case 9: GlStateManager.translate(0, -5, 0);
+      GlStateManager.translate(0, 0, 0);
+
+
+      if (guiScrollScreenBook.selectedBeastIndex == 0) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 1) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 2) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 3) {
+        GlStateManager.translate(0, -10, 0);
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 4) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 5) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 6) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 7) {
+        ;
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 8) {
+        GlStateManager.translate(0, -10, 0);
+      }
+      if (guiScrollScreenBook.selectedBeastIndex == 9) {
+        GlStateManager.translate(0, -5, 0);
       }
 
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
