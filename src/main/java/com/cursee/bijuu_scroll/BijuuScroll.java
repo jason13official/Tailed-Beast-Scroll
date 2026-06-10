@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -67,6 +68,13 @@ public class BijuuScroll {
         ((IHasModel) item).registerModels();
       }
     });
+  }
+
+  @SubscribeEvent
+  public void onCommand(CommandEvent event) {
+    if (event.getCommand().getName().equals("reload")) {
+      ModConfig.reload();
+    }
   }
 
   @SubscribeEvent

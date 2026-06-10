@@ -22,7 +22,14 @@ public class ModConfig {
   public static double MASTER_OFFSET_Y;
   public static double MASTER_OFFSET_Z;
 
+  private static File configFile;
+
   public static void init(File configFile) {
+    ModConfig.configFile = configFile;
+    reload();
+  }
+
+  public static void reload() {
     Configuration config = new Configuration(configFile);
     config.load();
 
