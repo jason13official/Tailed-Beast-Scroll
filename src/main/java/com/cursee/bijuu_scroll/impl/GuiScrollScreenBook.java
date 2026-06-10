@@ -280,7 +280,7 @@ public class GuiScrollScreenBook extends GuiScreen {
       GlStateManager.pushMatrix();
 
       // normal offsets
-      GlStateManager.translate(60, 10, 20);
+      GlStateManager.translate(ModConfig.MASTER_OFFSET_X, ModConfig.MASTER_OFFSET_Y, ModConfig.MASTER_OFFSET_Z);
       GlStateManager.scale(0.8, 0.8, 0.8);
 
       GlStateManager.translate(0, 0, 0);
