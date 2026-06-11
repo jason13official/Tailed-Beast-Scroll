@@ -288,6 +288,7 @@ public class GuiScrollScreenBook extends GuiScreen {
 
       int beastIdx = guiScrollScreenBook.selectedBeastIndex;
       GlStateManager.translate(ModConfig.OFFSET_X[beastIdx], ModConfig.OFFSET_Y[beastIdx], ModConfig.OFFSET_Z[beastIdx]);
+      GlStateManager.scale(ModConfig.SCALE[beastIdx], ModConfig.SCALE[beastIdx], ModConfig.SCALE[beastIdx]);
 
       GuiInventory.drawEntityOnScreen(i + xoffset, j + yoffset, scale,
           (float)(i + xoffset) - guiScrollScreenBook.oldMouseX, (float)(j + xoffset) - guiScrollScreenBook.oldMouseY, beast);

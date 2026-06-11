@@ -13,10 +13,12 @@ public class ModConfig {
   private static final double[] DEFAULT_OFFSET_X = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   private static final double[] DEFAULT_OFFSET_Y = {0, 0, 0, -10, 0, 0, 0, -10, 0, -5};
   private static final double[] DEFAULT_OFFSET_Z = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  private static final double[] DEFAULT_SCALE = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   public static final double[] OFFSET_X = new double[10];
   public static final double[] OFFSET_Y = new double[10];
   public static final double[] OFFSET_Z = new double[10];
+  public static final double[] SCALE = new double[10];
 
   public static double MASTER_OFFSET_X;
   public static double MASTER_OFFSET_Y;
@@ -46,6 +48,7 @@ public class ModConfig {
       OFFSET_X[idx] = config.get(category, "offset_x", DEFAULT_OFFSET_X[idx], "X offset for the preview model", -50.0, 50.0).getDouble();
       OFFSET_Y[idx] = config.get(category, "offset_y", DEFAULT_OFFSET_Y[idx], "Y offset for the preview model", -50.0, 50.0).getDouble();
       OFFSET_Z[idx] = config.get(category, "offset_z", DEFAULT_OFFSET_Z[idx], "Z offset for the preview model", -50.0, 50.0).getDouble();
+      SCALE[idx] = config.get(category, "scale", DEFAULT_SCALE[idx], "Uniform scale multiplier for the preview model (applied to X, Y, and Z)", 0.1, 5.0).getDouble();
     }
 
     if (config.hasChanged()) {
