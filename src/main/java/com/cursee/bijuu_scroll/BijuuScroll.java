@@ -1,7 +1,7 @@
 package com.cursee.bijuu_scroll;
 
 import com.cursee.bijuu_scroll.api.IHasModel;
-import com.cursee.bijuu_scroll.command.CommandRerollRecipes;
+import com.cursee.bijuu_scroll.command.CommandRandomLoot;
 import com.cursee.bijuu_scroll.config.ModConfig;
 import com.cursee.bijuu_scroll.impl.GuiHandler;
 import com.cursee.bijuu_scroll.impl.ItemScroll;
@@ -62,7 +62,7 @@ public class BijuuScroll {
 
   @Mod.EventHandler
   public void serverStarting(FMLServerStartingEvent event) {
-    event.registerServerCommand(new CommandRerollRecipes());
+    event.registerServerCommand(new CommandRandomLoot());
   }
 
   @SubscribeEvent
