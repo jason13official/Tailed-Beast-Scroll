@@ -6,13 +6,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -25,7 +28,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
  */
 public class RandomCraftHandler {
 
+  private static final String REMAPPED_TAG = "bijuu_scroll_remapped";
+
   private static final Map<UUID, ItemStack> lastPreviewShown = new ConcurrentHashMap<>();
+
+  public static void clearPreviewCache() {
+    lastPreviewShown.clear();
+  }
 
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -42,6 +51,8 @@ public class RandomCraftHandler {
     } else if (container instanceof ContainerWorkbench) {
       ContainerWorkbench cw = (ContainerWorkbench) container;
       updateCraftPreview(player, cw.craftMatrix, cw.craftResult);
+    } else if (container instanceof ContainerFurnace) {
+      updateFurnacePreview(container);
     }
   }
 
@@ -101,6 +112,35 @@ public class RandomCraftHandler {
     }
   }
 
+  private static void updateFurnacePreview(Container container) {
+    Slot outputSlot = container.getSlot(2);
+    ItemStack output = outputSlot.getStack();
+    if (output.isEmpty() || isRemapped(output)) {
+      return;
+    }
+
+    ItemStack replacement = RecipeRandomizer.remapSmeltingResult(output);
+    if (replacement.isEmpty() || replacement.getItem() == output.getItem()) {
+      return;
+    }
+
+    replacement = replacement.copy();
+    replacement.setCount(output.getCount());
+    markRemapped(replacement);
+    outputSlot.putStack(replacement);
+    container.detectAndSendChanges();
+  }
+
+  private static boolean isRemapped(ItemStack stack) {
+    return stack.hasTagCompound() && stack.getTagCompound().getBoolean(REMAPPED_TAG);
+  }
+
+  private static void markRemapped(ItemStack stack) {
+    NBTTagCompound tag = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
+    tag.setBoolean(REMAPPED_TAG, true);
+    stack.setTagCompound(tag);
+  }
+
   @SubscribeEvent
   public void onCraft(PlayerEvent.ItemCraftedEvent event) {
     EntityPlayer player = event.player;
@@ -134,22 +174,14 @@ public class RandomCraftHandler {
 
   @SubscribeEvent
   public void onSmelted(PlayerEvent.ItemSmeltedEvent event) {
-    EntityPlayer player = event.player;
-    if (player.world.isRemote) {
-      return;
+    // item was already remapped in-place by updateFurnacePreview(); just strip the marker tag.
+    ItemStack stack = event.smelting;
+    if (stack.hasTagCompound() && stack.getTagCompound().hasKey(REMAPPED_TAG)) {
+      stack.getTagCompound().removeTag(REMAPPED_TAG);
+      if (stack.getTagCompound().isEmpty()) {
+        stack.setTagCompound(null);
+      }
     }
-
-    ItemStack vanilla = event.smelting.copy();
-    if (vanilla.isEmpty()) {
-      return;
-    }
-
-    ItemStack replacement = RecipeRandomizer.remapSmeltingResult(vanilla);
-    if (replacement.isEmpty()) {
-      return;
-    }
-
-    forceSwapResult(player, vanilla, replacement);
   }
 
   private static void forceSwapResult(EntityPlayer player, ItemStack vanillaResult, ItemStack replacement) {

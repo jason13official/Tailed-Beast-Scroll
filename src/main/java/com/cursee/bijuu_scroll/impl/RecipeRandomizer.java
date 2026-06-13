@@ -28,6 +28,10 @@ public final class RecipeRandomizer {
   private RecipeRandomizer() {
   }
 
+  public static synchronized void invalidatePool() {
+    pool = null;
+  }
+
   public static ItemStack remapCraftingResult(IRecipe recipe, ItemStack vanilla) {
     if (!ModConfig.RANDOMIZE_RECIPES || vanilla.isEmpty()) {
       return vanilla;

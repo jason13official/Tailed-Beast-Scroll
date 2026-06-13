@@ -63,4 +63,13 @@ public class ModConfig {
       config.save();
     }
   }
+
+  public static void setRecipeSeed(int seed) {
+    RECIPE_SEED = seed;
+
+    Configuration config = new Configuration(configFile);
+    config.load();
+    config.get("recipes", "recipe_seed", 1, "Seed for the recipe output randomizer; change to reroll the mapping").set(seed);
+    config.save();
+  }
 }

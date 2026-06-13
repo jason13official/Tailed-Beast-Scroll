@@ -1,6 +1,7 @@
 package com.cursee.bijuu_scroll;
 
 import com.cursee.bijuu_scroll.api.IHasModel;
+import com.cursee.bijuu_scroll.command.CommandRerollRecipes;
 import com.cursee.bijuu_scroll.config.ModConfig;
 import com.cursee.bijuu_scroll.impl.GuiHandler;
 import com.cursee.bijuu_scroll.impl.ItemScroll;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import org.apache.logging.log4j.LogManager;
@@ -56,6 +58,11 @@ public class BijuuScroll {
 
   @Mod.EventHandler
   public void onLoadComplete(FMLLoadCompleteEvent event) {
+  }
+
+  @Mod.EventHandler
+  public void serverStarting(FMLServerStartingEvent event) {
+    event.registerServerCommand(new CommandRerollRecipes());
   }
 
   @SubscribeEvent
