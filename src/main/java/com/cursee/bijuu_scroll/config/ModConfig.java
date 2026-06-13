@@ -24,6 +24,9 @@ public class ModConfig {
   public static double MASTER_OFFSET_Y;
   public static double MASTER_OFFSET_Z;
 
+  public static boolean RANDOMIZE_RECIPES;
+  public static int RECIPE_SEED;
+
   private static File configFile;
 
   public static void init(File configFile) {
@@ -50,6 +53,11 @@ public class ModConfig {
       OFFSET_Z[idx] = config.get(category, "offset_z", DEFAULT_OFFSET_Z[idx], "Z offset for the preview model", -50.0, 50.0).getDouble();
       SCALE[idx] = config.get(category, "scale", DEFAULT_SCALE[idx], "Uniform scale multiplier for the preview model (applied to X, Y, and Z)", 0.1, 5.0).getDouble();
     }
+
+    String recipesCategory = "recipes";
+    config.setCategoryComment(recipesCategory, "Deterministically remap every recipe's output to a random item");
+    RANDOMIZE_RECIPES = config.get(recipesCategory, "randomize_recipes", true, "If true, every crafting and furnace recipe yields a different (but deterministic) item").getBoolean();
+    RECIPE_SEED = config.get(recipesCategory, "recipe_seed", 1, "Seed for the recipe output randomizer; change to reroll the mapping").getInt();
 
     if (config.hasChanged()) {
       config.save();

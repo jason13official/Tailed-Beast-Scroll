@@ -4,6 +4,7 @@ import com.cursee.bijuu_scroll.api.IHasModel;
 import com.cursee.bijuu_scroll.config.ModConfig;
 import com.cursee.bijuu_scroll.impl.GuiHandler;
 import com.cursee.bijuu_scroll.impl.ItemScroll;
+import com.cursee.bijuu_scroll.impl.RandomCraftHandler;
 import com.cursee.bijuu_scroll.proxy.CommonProxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class BijuuScroll {
 
   public static final AtomicBoolean TEN_TAILS_VIEWABLE = new AtomicBoolean(false);
 
-  public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
+  public static final Logger LOG = LogManager.getLogger(Tags.MOD_NAME);
   public static final List<Item> ITEMS = new ArrayList<>();
   public static final Item SCROLL = new ItemScroll("scroll");
 
@@ -48,6 +49,7 @@ public class BijuuScroll {
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(this);
+    MinecraftForge.EVENT_BUS.register(new RandomCraftHandler());
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
     ModConfig.init(event.getSuggestedConfigurationFile());
   }
